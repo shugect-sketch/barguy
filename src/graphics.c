@@ -67,10 +67,10 @@ void DrawRejectionScreen(int attempt_num) {
     // Show rejection message
     // Show attempt counter
     
-    FntPrint(-1, "BARGUY\n\n");
-    FntPrint(-1, "She rejected you! (Attempt %d)\n", attempt_num);
-    FntPrint(-1, "You lost a heart.\n");
-    FntPrint(-1, "[X] Continue\n");
+    FntPrint(-1, "\n\n\n\n\n");  // Push text down to avoid overlap
+    FntPrint(-1, "She rejected you!\n");
+    FntPrint(-1, "(Attempt %d/3)\n", attempt_num);
+    FntPrint(-1, "\n[X] Try Again\n");
     FntFlush(-1);
 }
 

@@ -184,8 +184,9 @@ int UpdateGameplay(SaveData *save) {
             int lineBonus = lines[selectedLine].bonus; // -10 / 0 / +10
             int totalChance = chance + lineBonus;
 
-            // First try ALWAYS rejects
+            // First try ALWAYS rejects (no heart loss, no game over)
             if(currentTry == 0) {
+                currentTry++;
                 subState = GS_REJECT;
                 frame_counter = 0;
                 break;
@@ -237,7 +238,7 @@ int UpdateGameplay(SaveData *save) {
                 subState = GS_SUCCESS;
                 frame_counter = 0;
             } else if(currentTry >= 3) {
-                // SLAPPED on last try
+                // SLAPPED on last try (4th attempt)
                 slapsThisRun++;
                 save->totalSlaps++;
                 lives--;
@@ -249,7 +250,7 @@ int UpdateGameplay(SaveData *save) {
                 }
                 return STATE_NEXT_GIRL;
             } else {
-                // Rejected, try again
+                // Rejected, try again (no heart loss yet)
                 currentTry++;
                 subState = GS_REJECT;
                 frame_counter = 0;
@@ -260,11 +261,6 @@ int UpdateGameplay(SaveData *save) {
         case GS_REJECT:
             DrawRejectionScreen(currentTry);
             if(buttons & PAD_CROSS) {
-                lives--;  // Lose heart on rejection
-                if(lives <= 0) {
-                    WriteSave(save);
-                    return STATE_GAME_OVER;
-                }
                 subState = GS_PICK_LINE;
                 PickLines();  // New lines for next attempt
             }
